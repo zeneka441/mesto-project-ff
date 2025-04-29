@@ -21,6 +21,9 @@ function createCard(initialCards, deleteCard, handleLike) {
 
   const likeButton = cardElement.querySelector(".card__like-button");
   likeButton.addEventListener("click", handleLike);
+
+  cardImage.addEventListener("click", cardClick);
+
   return cardElement;
 }
 
@@ -34,7 +37,12 @@ function deleteCard(evt) {
 
 // Вывести карточки на страницу
 initialCards.forEach((initialCards) => {
-  const cardElement = createCard(initialCards, deleteCard, handleLike);
+  const cardElement = createCard(
+    initialCards,
+    deleteCard,
+    handleLike,
+    cardClick
+  );
   cardsContainer.append(cardElement);
 });
 
@@ -125,7 +133,7 @@ closeAddButton.addEventListener("click", function () {
 });
 
 // ____________________________________________
-// Функция добавления новой
+// Функция добавления новой карточки
 
 const cardForm = addPopup.querySelector(".popup__form");
 const cardNameInput = addPopup.querySelector(".popup__input_type_card-name");
@@ -139,7 +147,7 @@ function handleAddCardSubmit(evt) {
     link: cardLinkInput.value,
   };
 
-  const cardElement = createCard(newCard, deleteCard, handleLike);
+  const cardElement = createCard(newCard, deleteCard, handleLike, cardClick);
   cardsContainer.prepend(cardElement);
 
   addPopup.classList.remove("popup_is-opened");
@@ -151,14 +159,30 @@ cardForm.addEventListener("submit", handleAddCardSubmit);
 
 // ____________________________________________
 // Функция лайка карточки
-// songsContainer.addEventListener('click', function (evt) {
-//   if (evt.target.classList.contains('card__like-button')) {
-//     evt.target.classList.toggle('card__like-button_is-active');
-//   }
-// });
 
 function handleLike(evt) {
   evt.target.classList.toggle("card__like-button_is-active");
 }
+
+// ____________________________________________
+// Открытие попапа с картинкой
+
+const imagePopup = document.querySelector(".popup_type_image");
+const popupImage = imagePopup.querySelector(".popup__image");
+const popupCaption = imagePopup.querySelector(".popup__caption");
+
+function cardClick(evt) {
+  popupImage.src = evt.target.src;
+  popupImage.alt = evt.target.alt;
+  popupCaption.textContent = evt.target.alt;
+
+  imagePopup.classList.add("popup_is-opened");
+}
+
+// Функция закрытия попапа с картинкой
+const closeImageButton = imagePopup.querySelector(".popup__close");
+closeImageButton.addEventListener("click", function () {
+  imagePopup.classList.remove("popup_is-opened");
+});
 
 // ____________________________________________
