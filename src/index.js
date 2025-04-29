@@ -1,39 +1,20 @@
-import './pages/index.css';
+// Подключение стилей
+import './vendor/normalize.css';
+import './vendor/fonts.css';
+import './blocks/page/page.css'; // и т.д. стили блоков
+import './pages/index.css'; // общая стилизация страницы
 
+// Импорт картинок
+import logo from './images/logo.svg';
+import avatar from './images/avatar.jpg';
 
-// Темплейт карточки
-const cardTemplate = document.querySelector('#card-template').content;
+// Установка картинок через JS
+const logoImg = document.querySelector('.logo');
+if (logoImg) logoImg.src = logo;
 
-// DOM узлы
-const cardsContainer = document.querySelector('.places__list');
+const avatarImg = document.querySelector('.profile__image');
+if (avatarImg) avatarImg.style.backgroundImage = `url(${avatar})`;
 
-//_____________________
-
-// Функция создания карточки
-function createCard(initialCards, deleteCard) {
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  
-  const cardImage = cardElement.querySelector('.card__image');
-  const cardTitle = cardElement.querySelector('.card__title');
-  cardImage.src = initialCards.link;
-  cardImage.alt = initialCards.name;
-  cardTitle.textContent = initialCards.name;
-  
-  const deleteButton = cardElement.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', deleteCard);
-  return cardElement;
-}
-
-// Функция удаления карточки
-function deleteCard(evt) {
-  const eventTarget = evt.target;
-  const cardElement = eventTarget.closest('.card');
-  cardElement.remove();
-}
-//_____________________
-
-// Вывести карточки на страницу
-initialCards.forEach(initialCards => {
-  const cardElement = createCard(initialCards, deleteCard);
-  cardsContainer.append(cardElement);
-});
+// Импорт скриптов
+import './scripts/index.js';
+import './scripts/cards.js';

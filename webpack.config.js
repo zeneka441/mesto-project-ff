@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.js',
-                publicPath: ''
+                publicPath: '/'
     },
     mode: 'development', // добавили режим разработчика
     // настройки локального сервера:
@@ -30,12 +30,16 @@ module.exports = {
             // при обработке этих файлов нужно использовать babel-loader
             use: 'babel-loader',
             // исключает папку node_modules, файлы в ней обрабатывать не нужно
-            exclude: '/node_modules/'
+            exclude: /node_modules/
           },
           {
             // регулярное выражение, которое ищет все файлы с такими расширениями
             test: /\.(png|svg|jpg|gif|woff(2)?|eot|ttf|otf)$/,
             type: 'asset/resource'
+          },
+          {
+            test: /\.html$/,
+            loader: 'html-loader'
           },
           {
             // применять это правило только к CSS-файлам
@@ -53,12 +57,15 @@ module.exports = {
           ]
       },
       plugins: [
-        new HtmlWebpackPlugin({
-          template: 'src/index.html'
-        }),
         new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin() // подключение плагина для объединения файлов
-      ]
+        new MiniCssExtractPlugin({
+          filename: '[name].css'
+        }),
+        new HtmlWebpackPlugin({
+          template: './src/index.html',
+          inject: 'body',
+        })
+      ],
 };
 
 // переписали точку выхода, используя утилиту path
