@@ -4,6 +4,7 @@ import './vendor/fonts.css';
 import './blocks/page/page.css'; // и т.д. стили блоков
 import './pages/index.css'; // общая стилизация страницы
 
+
 // Импорт картинок
 import logo from './images/logo.svg';
 import avatar from './images/avatar.jpg';
