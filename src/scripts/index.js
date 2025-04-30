@@ -20,7 +20,7 @@ const nameInput = document.querySelector(".popup__input_type_name");
 const descriptionInput = document.querySelector(
   ".popup__input_type_description"
 );
-const formElement = editPopup.querySelector(".popup__form");
+const profileForm = editPopup.querySelector(".popup__form");
 
 // Попап добавления карточки
 const addButton = document.querySelector(".profile__add-button");
@@ -54,7 +54,7 @@ editButton.addEventListener("click", () => {
 closeEditButton.addEventListener("click", () => closeModal(editPopup));
 
 // Функция сабмита информации профиля
-formElement.addEventListener("submit", (evt) => {
+profileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileDescription.textContent = descriptionInput.value;
