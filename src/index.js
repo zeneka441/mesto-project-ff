@@ -1,7 +1,4 @@
 // Подключение стилей
-import "./vendor/normalize.css";
-import "./vendor/fonts.css";
-import "./blocks/page/page.css";
 import "./pages/index.css";
 
 // Импорт картинок
@@ -17,4 +14,3 @@ if (avatarImg) avatarImg.style.backgroundImage = `url(${avatar})`;
 
 // Импорт скриптов
 import "./scripts/index.js";
-import "./scripts/cards.js";
