@@ -93,20 +93,3 @@ function cardClick(evt) {
 
 // Функция закрытия попапа с картинкой
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
-
-// Закрытие попапа по клику на Esc
-document.addEventListener("keydown", (evt) => {
-  if (evt.key === "Escape") {
-    const openedPopup = document.querySelector(".popup_is-opened");
-    if (openedPopup) closeModal(openedPopup);
-  }
-});
-
-// Закрытие попапа по клику на оверлей
-document.querySelectorAll(".popup").forEach((popup) => {
-  popup.addEventListener("click", (evt) => {
-    if (evt.target === popup) {
-      closeModal(popup);
-    }
-  });
-});
