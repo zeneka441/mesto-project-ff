@@ -49,6 +49,9 @@ editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
   openModal(editPopup);
+  // Удаляем ошибки валидации при открытии попапа
+  nameInput.dispatchEvent(new Event('input'));
+  descriptionInput.dispatchEvent(new Event('input'));
 });
 
 // Функция закрытия попапа профиля

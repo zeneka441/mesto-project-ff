@@ -36,9 +36,10 @@ export const enableValidation = () => {
       }
     };
     
-
     const hasInvalidInput = () => {
-      return inputList.some((inputElement) => !inputElement.validity.valid);
+      return inputList.some((inputElement) => {
+        return !inputElement.validity.valid;
+      })
     };
 
     const toggleButtonState = () => {
