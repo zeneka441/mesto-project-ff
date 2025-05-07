@@ -1,6 +1,7 @@
 import { initialCards } from "./cards.js";
 import { createCard, deleteCard, handleLike } from "../components/card.js";
 import { openModal, closeModal } from "../components/modal.js";
+import { enableValidation } from "../components/validation.js";
 
 // DOM узлы
 // Карточки
@@ -93,3 +94,5 @@ function cardClick(evt) {
 
 // Функция закрытия попапа с картинкой
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
+
+enableValidation();
