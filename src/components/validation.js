@@ -24,7 +24,10 @@ export const enableValidation = () => {
         let errorMessage = inputElement.validationMessage;
     
         if (inputElement.validity.valueMissing) {
-          errorMessage = "Вы пропустили это поле";
+          errorMessage = "Вы пропустили это поле.";
+        }
+        else if (inputElement.validity.patternMismatch) {
+          errorMessage = "Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы.";
         }
     
         showInputError(inputElement, errorMessage);
