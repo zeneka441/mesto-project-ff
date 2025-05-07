@@ -85,6 +85,11 @@ cardForm.addEventListener("submit", (evt) => {
 
   closeModal(addPopup);
   cardForm.reset();
+
+  // Деактивируем кнопку сабмита
+  const cardSubmitButton = cardForm.querySelector(".popup__button");
+  cardSubmitButton.disabled = true;
+  cardSubmitButton.classList.add("button_inactive");
 });
 
 // Функция открытия попапа с картинкой

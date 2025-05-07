@@ -29,6 +29,9 @@ export const enableValidation = () => {
         else if (inputElement.validity.patternMismatch) {
           errorMessage = "Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы.";
         }
+        else if (inputElement.validity.typeMismatch && inputElement.type === "url") {
+          errorMessage = "Введите адрес сайта.";
+        }
     
         showInputError(inputElement, errorMessage);
       } else {
