@@ -1,71 +1,76 @@
-export const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
+const showInputError = (formElement, inputElement, errorMessage, config) => {
+  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  inputElement.classList.add(config.inputErrorClass);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add(config.errorClass);
+};
 
-  formList.forEach((formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    const buttonElement = formElement.querySelector('.popup__button');
+const hideInputError = (formElement, inputElement, config) => {
+  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  inputElement.classList.remove(config.inputErrorClass);
+  errorElement.classList.remove(config.errorClass);
+  errorElement.textContent = '';
+};
 
-    const showInputError = (inputElement, errorMessage) => {
-      const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-      inputElement.classList.add('popup__input_type_error');
-      errorElement.textContent = errorMessage;
-      errorElement.classList.add('popup__input-error_active');
-    };
+const checkInputValidity = (formElement, inputElement, config) => {
+  if (!inputElement.validity.valid) {
+    let errorMessage = inputElement.validationMessage;
 
-    const hideInputError = (inputElement) => {
-      const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-      inputElement.classList.remove('popup__input_type_error');
-      errorElement.classList.remove('popup__input-error_active');
-      errorElement.textContent = '';
-    };
+    if (inputElement.validity.valueMissing) {
+      errorMessage = "Вы пропустили это поле.";
+    } else if (inputElement.validity.patternMismatch) {
+      errorMessage = inputElement.dataset.error || "Разрешены только латинские и кириллические буквы, дефис и пробелы.";
+    } else if (inputElement.validity.typeMismatch && inputElement.type === "url") {
+      errorMessage = "Введите адрес сайта.";
+    }
 
-    const checkInputValidity = (inputElement) => {
-      if (!inputElement.validity.valid) {
-        let errorMessage = inputElement.validationMessage;
-    
-        if (inputElement.validity.valueMissing) {
-          errorMessage = "Вы пропустили это поле.";
-        }
-        else if (inputElement.validity.patternMismatch) {
-          errorMessage = "Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы.";
-        }
-        else if (inputElement.validity.typeMismatch && inputElement.type === "url") {
-          errorMessage = "Введите адрес сайта.";
-        }
-    
-        showInputError(inputElement, errorMessage);
-      } else {
-        hideInputError(inputElement);
-      }
-    };
-    
-    const hasInvalidInput = () => {
-      return inputList.some((inputElement) => {
-        return !inputElement.validity.valid;
-      })
-    };
+    showInputError(formElement, inputElement, errorMessage, config);
+  } else {
+    hideInputError(formElement, inputElement, config);
+  }
+};
 
-    const toggleButtonState = () => {
-      if (hasInvalidInput()) {
-        buttonElement.disabled = true;
-        buttonElement.classList.add('button_inactive');
-      } else {
-        buttonElement.disabled = false;
-        buttonElement.classList.remove('button_inactive');
-      }
-    };
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => !inputElement.validity.valid);
+};
 
-    toggleButtonState();
+export const toggleButtonState = (inputList, buttonElement, config) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true;
+    buttonElement.classList.add(config.inactiveButtonClass);
+  } else {
+    buttonElement.disabled = false;
+    buttonElement.classList.remove(config.inactiveButtonClass);
+  }
+};
 
-    inputList.forEach((inputElement) => {
-      inputElement.addEventListener('input', () => {
-        checkInputValidity(inputElement);
-        toggleButtonState();
-      });
+const setEventListeners = (formElement, config) => {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
+
+  toggleButtonState(inputList, buttonElement, config);
+
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(formElement, inputElement, config);
+      toggleButtonState(inputList, buttonElement, config);
     });
-
-    // formElement.addEventListener('submit', (evt) => {
-    //   evt.preventDefault();
-    // });
   });
+};
+
+export const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => setEventListeners(formElement, config));
+};
+
+export const clearValidation = (formElement, config) => {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
+
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement, config);
+  });
+
+  buttonElement.disabled = true;
+  buttonElement.classList.add(config.inactiveButtonClass);
 };

@@ -1,10 +1,19 @@
 import { initialCards } from "./cards.js";
 import { createCard, deleteCard, handleLike } from "../components/card.js";
 import { openModal, closeModal } from "../components/modal.js";
-import { enableValidation } from "../components/validation.js";
+import { enableValidation, clearValidation } from "../components/validation.js";
+
+// Конфигурация валидации
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
 
 // DOM узлы
-// Карточки
 const cardsContainer = document.querySelector(".places__list");
 
 // Попап редактирования профиля
@@ -48,10 +57,12 @@ initialCards.forEach((cardData) => {
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
+  clearValidation(profileForm, validationConfig);
+
+ // Удаляем ошибки валидации при открытии попапа
+  nameInput.dispatchEvent(new Event("input"));
+  descriptionInput.dispatchEvent(new Event("input"));
   openModal(editPopup);
-  // Удаляем ошибки валидации при открытии попапа
-  nameInput.dispatchEvent(new Event('input'));
-  descriptionInput.dispatchEvent(new Event('input'));
 });
 
 // Функция закрытия попапа профиля
@@ -66,7 +77,11 @@ profileForm.addEventListener("submit", (evt) => {
 });
 
 // Функция открытия попапа добавления карточки
-addButton.addEventListener("click", () => openModal(addPopup));
+addButton.addEventListener("click", () => {
+  cardForm.reset();
+  clearValidation(cardForm, validationConfig);
+  openModal(addPopup);
+});
 
 // Функция закрытия попапа добавления карточки
 closeAddButton.addEventListener("click", () => closeModal(addPopup));
@@ -86,10 +101,8 @@ cardForm.addEventListener("submit", (evt) => {
   closeModal(addPopup);
   cardForm.reset();
 
-  // Деактивируем кнопку сабмита
-  const cardSubmitButton = cardForm.querySelector(".popup__button");
-  cardSubmitButton.disabled = true;
-  cardSubmitButton.classList.add("button_inactive");
+  // Деактивируем кнопку сабмита после очистки формы
+  clearValidation(cardForm, validationConfig);
 });
 
 // Функция открытия попапа с картинкой
@@ -103,4 +116,4 @@ function cardClick(evt) {
 // Функция закрытия попапа с картинкой
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
 
-enableValidation();
+enableValidation(validationConfig);
