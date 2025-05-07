@@ -21,11 +21,18 @@ export const enableValidation = () => {
 
     const checkInputValidity = (inputElement) => {
       if (!inputElement.validity.valid) {
-        showInputError(inputElement, inputElement.validationMessage);
+        let errorMessage = inputElement.validationMessage;
+    
+        if (inputElement.validity.valueMissing) {
+          errorMessage = "Вы пропустили это поле";
+        }
+    
+        showInputError(inputElement, errorMessage);
       } else {
         hideInputError(inputElement);
       }
     };
+    
 
     const hasInvalidInput = () => {
       return inputList.some((inputElement) => !inputElement.validity.valid);
