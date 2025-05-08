@@ -6,6 +6,7 @@ import {
   getInitialCards,
   updateUserInfo,
   addNewCard,
+  updateAvatar,
 } from "../components/api.js";
 
 // Конфигурация валидации
@@ -26,6 +27,7 @@ const avatarPopup = document.querySelector(".popup_type_avatar");
 const avatarForm = avatarPopup.querySelector(".popup__form");
 const openAvatarButton = document.querySelector(".profile__avatar-overlay");
 const closeAvatarButton = avatarPopup.querySelector(".popup__close");
+const avatarInput = avatarForm.querySelector(".popup__input_type_avatar");
 
 
 // Попап редактирования профиля
@@ -91,6 +93,21 @@ openAvatarButton.addEventListener("click", () => {
 
 // Функция закрытия попапа обновления аватара
 closeAvatarButton.addEventListener("click", () => closeModal(avatarPopup));
+
+// Функция сабмита аватара
+avatarForm.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  const avatarUrl = avatarInput.value;
+
+  updateAvatar(avatarUrl)
+    .then((userData) => {
+      avatarImg.style.backgroundImage = `url(${userData.avatar})`;
+      closeModal(avatarPopup);
+      avatarForm.reset();
+    });
+});
+
+
 
 // Фнкция открытия попапа профиля
 editButton.addEventListener("click", () => {
