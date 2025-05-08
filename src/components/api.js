@@ -27,4 +27,16 @@ export const getInitialCards = () => {
     }
   });
 };
-  
+
+// Функция обновления данных профиля
+export const updateUserInfo = (name, about) => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({ name, about }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
+};

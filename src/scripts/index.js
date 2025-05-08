@@ -1,8 +1,11 @@
-// import { initialCards } from "./cards.js";
 import { createCard, deleteCard, handleLike } from "../components/card.js";
 import { openModal, closeModal } from "../components/modal.js";
 import { enableValidation, clearValidation } from "../components/validation.js";
-import { getUserInfo, getInitialCards } from "../components/api.js";
+import {
+  getUserInfo,
+  getInitialCards,
+  updateUserInfo,
+} from "../components/api.js";
 
 // Конфигурация валидации
 const validationConfig = {
@@ -71,12 +74,6 @@ const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImageButton = imagePopup.querySelector(".popup__close");
 
-// Функция создания карточки
-// initialCards.forEach((cardData) => {
-//   const cardElement = createCard(cardData, deleteCard, handleLike, cardClick);
-//   cardsContainer.append(cardElement);
-// });
-
 // Фнкция открытия попапа профиля
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
@@ -95,9 +92,13 @@ closeEditButton.addEventListener("click", () => closeModal(editPopup));
 // Функция сабмита информации профиля
 profileForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = descriptionInput.value;
-  closeModal(editPopup);
+  const name = nameInput.value;
+  const about = descriptionInput.value;
+  updateUserInfo(name, about).then((updatedUser) => {
+    profileName.textContent = updatedUser.name;
+    profileDescription.textContent = updatedUser.about;
+    closeModal(editPopup);
+  });
 });
 
 // Функция открытия попапа добавления карточки
