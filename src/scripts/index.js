@@ -40,26 +40,30 @@ const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const avatarImg = document.querySelector(".profile__image");
 
-Promise.all([getUserInfo(), getInitialCards()]).then(([userData, cards]) => {
-  currentUserId = userData._id;
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userData, cards]) => {
+    currentUserId = userData._id;
 
-  // Устанавливаем информацию о пользователе в профиль
-  profileName.textContent = userData.name;
-  profileDescription.textContent = userData.about;
-  avatarImg.style.backgroundImage = `url(${userData.avatar})`;
+    // Устанавливаем информацию о пользователе в профиль
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    avatarImg.style.backgroundImage = `url(${userData.avatar})`;
 
-  // Рендер карточек
-  cards.forEach((cardData) => {
-    const cardElement = createCard(
-      cardData,
-      deleteCard,
-      handleLike,
-      cardClick,
-      currentUserId
-    );
-    cardsContainer.append(cardElement);
+    // Рендер карточек
+    cards.forEach((cardData) => {
+      const cardElement = createCard(
+        cardData,
+        deleteCard,
+        handleLike,
+        cardClick,
+        currentUserId
+      );
+      cardsContainer.append(cardElement);
+    });
+  })
+  .catch((err) => {
+    console.error("Ошибка при загрузке данных:", err);
   });
-});
 
 // Попап редактирования профиля
 const nameInput = document.querySelector(".popup__input_type_name");
@@ -117,6 +121,10 @@ avatarForm.addEventListener("submit", (evt) => {
     })
     .then(() => {
       loading(saveButton, false);
+    })
+    .catch((err) => {
+      console.error("Ошибка при обновлении аватара:", err);
+      loading(saveButton, false);
     });
 });
 
@@ -150,6 +158,10 @@ profileForm.addEventListener("submit", (evt) => {
       closeModal(editPopup);
     })
     .then(() => {
+      loading(saveButton, false);
+    })
+    .catch((err) => {
+      console.error("Ошибка при обновлении профиля:", err);
       loading(saveButton, false);
     });
 });
@@ -188,6 +200,10 @@ cardForm.addEventListener("submit", (evt) => {
       clearValidation(cardForm, validationConfig);
     })
     .then(() => {
+      loading(saveButton, false);
+    })
+    .catch((err) => {
+      console.error("Ошибка при добавлении карточки:", err);
       loading(saveButton, false);
     });
 });
