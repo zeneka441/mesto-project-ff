@@ -2,6 +2,7 @@ import { initialCards } from "./cards.js";
 import { createCard, deleteCard, handleLike } from "../components/card.js";
 import { openModal, closeModal } from "../components/modal.js";
 import { enableValidation, clearValidation } from "../components/validation.js";
+import { getUserInfo } from "../components/api.js";
 
 // Конфигурация валидации
 const validationConfig = {
@@ -24,6 +25,16 @@ const closeEditButton = editPopup.querySelector(".popup__close");
 // Профиль
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const avatarImg = document.querySelector(".profile__image");
+
+// Получаем информацию о пользователе с сервера
+// и устанавливаем её в профиль
+getUserInfo()
+  .then((userData) => {
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    avatarImg.style.backgroundImage = `url(${userData.avatar})`;
+  });
 
 // Попап редактирования профиля
 const nameInput = document.querySelector(".popup__input_type_name");
