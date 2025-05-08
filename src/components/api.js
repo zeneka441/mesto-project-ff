@@ -14,6 +14,7 @@ export const getUserInfo = () => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -25,6 +26,7 @@ export const getInitialCards = () => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -38,6 +40,7 @@ export const updateUserInfo = (name, about) => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -51,6 +54,7 @@ export const addNewCard = (name, link) => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -63,6 +67,7 @@ export const deleteCardFromServer = (cardId) => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -75,6 +80,7 @@ export const addLike = (cardId) => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -87,6 +93,7 @@ export const removeLike = (cardId) => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
@@ -100,6 +107,7 @@ export const updateAvatar = (avatar) => {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
