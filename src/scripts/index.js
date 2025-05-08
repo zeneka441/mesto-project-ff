@@ -84,8 +84,10 @@ const closeImageButton = imagePopup.querySelector(".popup__close");
 
 // Функция открытия попапа обновления аватара
 openAvatarButton.addEventListener("click", () => {
+  avatarForm.reset();
+  clearValidation(avatarForm, validationConfig);
   openModal(avatarPopup);
-});
+})
 
 // Функция закрытия попапа обновления аватара
 closeAvatarButton.addEventListener("click", () => closeModal(avatarPopup));
