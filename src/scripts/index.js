@@ -21,6 +21,11 @@ const validationConfig = {
 // DOM узлы
 const cardsContainer = document.querySelector(".places__list");
 
+// Попап редактирования аватара
+const avatarPopup = document.querySelector(".popup_type_avatar");
+const avatarForm = avatarPopup.querySelector(".popup__form");
+const openAvatarButton = document.querySelector(".profile__avatar-overlay");
+
 // Попап редактирования профиля
 const editButton = document.querySelector(".profile__edit-button");
 const editPopup = document.querySelector(".popup_type_edit");
@@ -119,21 +124,20 @@ cardForm.addEventListener("submit", (evt) => {
   const name = cardNameInput.value;
   const link = cardLinkInput.value;
 
-  addNewCard(name, link)
-    .then((cardData) => {
-      const cardElement = createCard(
-        cardData,
-        deleteCard,
-        handleLike,
-        cardClick,
-        currentUserId
-      );
-      cardsContainer.prepend(cardElement);
+  addNewCard(name, link).then((cardData) => {
+    const cardElement = createCard(
+      cardData,
+      deleteCard,
+      handleLike,
+      cardClick,
+      currentUserId
+    );
+    cardsContainer.prepend(cardElement);
 
-      closeModal(addPopup);
-      cardForm.reset();
-      clearValidation(cardForm, validationConfig);
-    });
+    closeModal(addPopup);
+    cardForm.reset();
+    clearValidation(cardForm, validationConfig);
+  });
 });
 
 // Функция открытия попапа с картинкой
@@ -146,5 +150,10 @@ function cardClick(evt) {
 
 // Функция закрытия попапа с картинкой
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
+
+// Функция открытия попапа обновления аватара
+openAvatarButton.addEventListener("click", () => {
+  openModal(avatarPopup);
+});
 
 enableValidation(validationConfig);

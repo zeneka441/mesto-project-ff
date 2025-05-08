@@ -89,3 +89,17 @@ export const removeLike = (cardId) => {
     }
   });
 };
+
+// Функция обновления аватара пользователя
+export const updateAvatar = (avatar) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({ avatar }),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
+};
+
