@@ -5,6 +5,7 @@ import {
   getUserInfo,
   getInitialCards,
   updateUserInfo,
+  addNewCard,
 } from "../components/api.js";
 
 // Конфигурация валидации
@@ -111,23 +112,28 @@ addButton.addEventListener("click", () => {
 // Функция закрытия попапа добавления карточки
 closeAddButton.addEventListener("click", () => closeModal(addPopup));
 
-// Функция сабмита новой карточки
+// Функция добавления новой карточки
 cardForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
 
-  const newCard = {
-    name: cardNameInput.value,
-    link: cardLinkInput.value,
-  };
+  const name = cardNameInput.value;
+  const link = cardLinkInput.value;
 
-  const cardElement = createCard(newCard, deleteCard, handleLike, cardClick);
-  cardsContainer.prepend(cardElement);
+  addNewCard(name, link)
+    .then((cardData) => {
+      const cardElement = createCard(
+        cardData,
+        deleteCard,
+        handleLike,
+        cardClick,
+        currentUserId
+      );
+      cardsContainer.prepend(cardElement);
 
-  closeModal(addPopup);
-  cardForm.reset();
-
-  // Деактивируем кнопку сабмита после очистки формы
-  clearValidation(cardForm, validationConfig);
+      closeModal(addPopup);
+      cardForm.reset();
+      clearValidation(cardForm, validationConfig);
+    });
 });
 
 // Функция открытия попапа с картинкой
