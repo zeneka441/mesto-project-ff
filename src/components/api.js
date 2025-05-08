@@ -65,3 +65,27 @@ export const deleteCardFromServer = (cardId) => {
     }
   });
 };
+
+// Функция поставки лайка
+export const addLike = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: "PUT",
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
+};
+
+// Функция удаления лайка
+export const removeLike = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
+};
