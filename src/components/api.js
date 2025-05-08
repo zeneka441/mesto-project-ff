@@ -53,3 +53,15 @@ export const addNewCard = (name, link) => {
     }
   });
 };
+
+// Функция удаления карточки
+export const deleteCardFromServer = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
+};
