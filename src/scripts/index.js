@@ -25,6 +25,8 @@ const cardsContainer = document.querySelector(".places__list");
 const avatarPopup = document.querySelector(".popup_type_avatar");
 const avatarForm = avatarPopup.querySelector(".popup__form");
 const openAvatarButton = document.querySelector(".profile__avatar-overlay");
+const closeAvatarButton = avatarPopup.querySelector(".popup__close");
+
 
 // Попап редактирования профиля
 const editButton = document.querySelector(".profile__edit-button");
@@ -79,6 +81,14 @@ const imagePopup = document.querySelector(".popup_type_image");
 const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImageButton = imagePopup.querySelector(".popup__close");
+
+// Функция открытия попапа обновления аватара
+openAvatarButton.addEventListener("click", () => {
+  openModal(avatarPopup);
+});
+
+// Функция закрытия попапа обновления аватара
+closeAvatarButton.addEventListener("click", () => closeModal(avatarPopup));
 
 // Фнкция открытия попапа профиля
 editButton.addEventListener("click", () => {
@@ -150,10 +160,5 @@ function cardClick(evt) {
 
 // Функция закрытия попапа с картинкой
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
-
-// Функция открытия попапа обновления аватара
-openAvatarButton.addEventListener("click", () => {
-  openModal(avatarPopup);
-});
 
 enableValidation(validationConfig);
