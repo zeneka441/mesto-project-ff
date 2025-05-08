@@ -6,6 +6,7 @@ const config = {
   },
 };
 
+// Функция для загрузки данных профиля
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
@@ -15,3 +16,15 @@ export const getUserInfo = () => {
     }
   });
 };
+
+// Функция для загрузки карточек
+export const getInitialCards = () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
+};
+  

@@ -1,17 +1,17 @@
-import { initialCards } from "./cards.js";
+// import { initialCards } from "./cards.js";
 import { createCard, deleteCard, handleLike } from "../components/card.js";
 import { openModal, closeModal } from "../components/modal.js";
 import { enableValidation, clearValidation } from "../components/validation.js";
-import { getUserInfo } from "../components/api.js";
+import { getUserInfo, getInitialCards } from "../components/api.js";
 
 // Конфигурация валидации
 const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'button_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "button_inactive",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__input-error_active",
 };
 
 // DOM узлы
@@ -23,18 +23,31 @@ const editPopup = document.querySelector(".popup_type_edit");
 const closeEditButton = editPopup.querySelector(".popup__close");
 
 // Профиль
+let currentUserId;
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const avatarImg = document.querySelector(".profile__image");
 
-// Получаем информацию о пользователе с сервера
-// и устанавливаем её в профиль
-getUserInfo()
-  .then((userData) => {
-    profileName.textContent = userData.name;
-    profileDescription.textContent = userData.about;
-    avatarImg.style.backgroundImage = `url(${userData.avatar})`;
+Promise.all([getUserInfo(), getInitialCards()]).then(([userData, cards]) => {
+  currentUserId = userData._id;
+
+  // Устанавливаем информацию о пользователе в профиль
+  profileName.textContent = userData.name;
+  profileDescription.textContent = userData.about;
+  avatarImg.style.backgroundImage = `url(${userData.avatar})`;
+
+  // Рендер карточек
+  cards.forEach((cardData) => {
+    const cardElement = createCard(
+      cardData,
+      deleteCard,
+      handleLike,
+      cardClick,
+      currentUserId
+    );
+    cardsContainer.append(cardElement);
   });
+});
 
 // Попап редактирования профиля
 const nameInput = document.querySelector(".popup__input_type_name");
@@ -59,10 +72,10 @@ const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImageButton = imagePopup.querySelector(".popup__close");
 
 // Функция создания карточки
-initialCards.forEach((cardData) => {
-  const cardElement = createCard(cardData, deleteCard, handleLike, cardClick);
-  cardsContainer.append(cardElement);
-});
+// initialCards.forEach((cardData) => {
+//   const cardElement = createCard(cardData, deleteCard, handleLike, cardClick);
+//   cardsContainer.append(cardElement);
+// });
 
 // Фнкция открытия попапа профиля
 editButton.addEventListener("click", () => {
@@ -70,7 +83,7 @@ editButton.addEventListener("click", () => {
   descriptionInput.value = profileDescription.textContent;
   clearValidation(profileForm, validationConfig);
 
- // Удаляем ошибки валидации при открытии попапа
+  // Удаляем ошибки валидации при открытии попапа
   nameInput.dispatchEvent(new Event("input"));
   descriptionInput.dispatchEvent(new Event("input"));
   openModal(editPopup);
