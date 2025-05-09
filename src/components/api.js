@@ -1,3 +1,5 @@
+import { checkResponse } from "../utils/checkResponse";
+
 const config = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-37",
   headers: {
