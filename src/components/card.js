@@ -42,6 +42,9 @@ export function createCard(cardData, handleDelete, handleLike, cardClick, curren
 export function deleteCard(cardId, cardElement) {
   deleteCardFromServer(cardId).then(() => {
     cardElement.remove();
+  })
+  .catch((err) => {
+    console.error("Ошибка при удалении карточки:", err);
   });
 }
 
@@ -53,5 +56,8 @@ export function handleLike(cardId, likeButton, likeCountElement) {
   action(cardId).then((updatedCard) => {
     likeCountElement.textContent = updatedCard.likes.length;
     likeButton.classList.toggle("card__like-button_is-active", !isLiked);
+  })
+  .catch((err) => {
+    console.error("Ошибка при изменении лайка:", err);
   });
 }
